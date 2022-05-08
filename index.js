@@ -165,7 +165,7 @@ class CustomCrop extends Component {
                 style={{
                     flex: 1,
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'center',
                 }}
             >
                 <View
@@ -320,9 +320,7 @@ const s = (props) => ({
     },
     cropContainer: {
         position: 'absolute',
-        left: 0,
         width: Dimensions.get('window').width,
-        top: 0,
     },
 });
 
