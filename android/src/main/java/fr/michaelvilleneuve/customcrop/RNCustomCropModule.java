@@ -40,6 +40,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.util.UUID;
+import java.lang.Math;
 
 public class RNCustomCropModule extends ReactContextBaseJavaModule {
 
@@ -101,11 +105,44 @@ public class RNCustomCropModule extends ReactContextBaseJavaModule {
     bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
     byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-    WritableMap map = Arguments.createMap();
-    map.putString("image", Base64.encodeToString(byteArray, Base64.DEFAULT));
-    callback.invoke(null, map);
+    String fileName = this.saveToDirectory(byteArray, "cropped", false);
 
+    WritableMap map = Arguments.createMap();
+    map.putDouble("height", dh);
+    map.putDouble("width", dw);
+    map.putString("image", "file://" + fileName);
+    // map.putString("image", imageData);
+    callback.invoke(null, map);
     m.release();
   }
+  private String getFileName(String folderName, boolean saveAsCache) {
+    String fileName;
+    String folderDir = this.reactContext.getCacheDir().toString();
 
+    if(!saveAsCache) {
+      folderDir = this.reactContext.getExternalFilesDir(null).toString();
+    }
+
+    File folder = new File(folderDir + "/" + folderName);
+    
+    if (!folder.exists()) {
+        boolean result = folder.mkdirs();
+    }
+    
+    fileName = folderDir + "/" + folderName + "/" + UUID.randomUUID() + ".jpg";
+    return fileName;
+  }
+
+  private String saveToDirectory(byte[] byteArray, String folderName, boolean saveAsCache) {
+    String fileName = this.getFileName(folderName, saveAsCache);
+
+    try (OutputStream stream = new FileOutputStream(fileName)) {
+        stream.write(byteArray);
+    } catch(Exception e) {
+
+    }
+
+    return fileName;
+  }
 }
+
