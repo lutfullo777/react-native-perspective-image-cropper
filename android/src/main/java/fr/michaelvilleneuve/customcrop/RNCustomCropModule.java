@@ -64,7 +64,7 @@ public class RNCustomCropModule extends ReactContextBaseJavaModule {
     Point br = new Point(points.getMap("bottomRight").getDouble("x"), points.getMap("bottomRight").getDouble("y"));
 
     Mat src = Imgcodecs.imread(imageUri.replace("file://", ""), Imgproc.COLOR_BGR2RGB);
-    Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
+//     Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
 
     boolean ratioAlreadyApplied = tr.x * (src.size().width / 500) < src.size().width;
     double ratio = ratioAlreadyApplied ? src.size().width / 500 : 1;
