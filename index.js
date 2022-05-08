@@ -82,6 +82,10 @@ class CustomCrop extends Component {
         this.panResponderBottomRight = this.createPanResponser(
             this.state.bottomRight,
         );
+        let ref = {
+            crop: ()=>this.crop()
+        }
+        this.props.getRef(ref)
     }
 
     createPanResponser(corner) {
